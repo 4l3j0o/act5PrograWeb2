@@ -1,0 +1,29 @@
+# Angular / Node
+node_modules/
+.angular/
+dist/
+tmp/
+out-tsc/
+.sass-cache/
+
+# .NET / EF Core
+bin/
+obj/
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.lock
+
+# OS
+Thumbs.db
+[Dd]esktop.ini
+.DS_Store

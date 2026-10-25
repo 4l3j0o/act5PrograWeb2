@@ -1,0 +1,114 @@
+<div class="container form-page">
+  <div class="glass-card form-card" appCardHover>
+    <div class="form-header">
+      <div class="header-icon">
+        <i class="fa-solid" [class.fa-pen-to-square]="isEditing" [class.fa-plus]="!isEditing"></i>
+      </div>
+      <div>
+        <h2 class="form-title">{{ isEditing ? 'Editar Producto' : 'Nuevo Producto' }}</h2>
+        <p class="form-subtitle">
+          {{ isEditing ? 'Modifica los campos del producto seleccionado' : 'Completa la información para registrar un producto en el sistema' }}
+        </p>
+      </div>
+    </div>
+
+    @if (mensajeError) {
+      <div class="alert-box alert-danger">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span>{{ mensajeError }}</span>
+      </div>
+    }
+
+    <form (ngSubmit)="guardar()" #prodForm="ngForm">
+      <div class="form-group">
+        <label for="nombre" class="form-label">Nombre del Producto *</label>
+        <input
+          id="nombre"
+          name="nombre"
+          type="text"
+          class="form-control"
+          placeholder="Ej. Teclado Mecánico RGB"
+          [(ngModel)]="producto.nombre"
+          required
+          minlength="3"
+          maxlength="150"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="descripcion" class="form-label">Descripción</label>
+        <textarea
+          id="descripcion"
+          name="descripcion"
+          rows="3"
+          class="form-control"
+          placeholder="Detalles sobre características, especificaciones..."
+          [(ngModel)]="producto.descripcion"
+          maxlength="500"
+        ></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="precio" class="form-label">Precio ($ USD) *</label>
+          <input
+            id="precio"
+            name="precio"
+            type="number"
+            step="0.01"
+            min="0.01"
+            class="form-control"
+            placeholder="0.00"
+            [(ngModel)]="producto.precio"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="stock" class="form-label">Stock Disponible *</label>
+          <input
+            id="stock"
+            name="stock"
+            type="number"
+            min="0"
+            class="form-control"
+            placeholder="0"
+            [(ngModel)]="producto.stock"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="categoriaId" class="form-label">Categoría *</label>
+        <select
+          id="categoriaId"
+          name="categoriaId"
+          class="form-control"
+          [(ngModel)]="producto.categoriaId"
+          required
+        >
+          @for (cat of categorias; track cat.id) {
+            <option [value]="cat.id">{{ cat.nombre }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <a routerLink="/productos" class="btn btn-secondary">
+          <i class="fa-solid fa-xmark"></i>
+          <span>Cancelar</span>
+        </a>
+        <button type="submit" class="btn btn-primary" [disabled]="guardando">
+          @if (guardando) {
+            <div class="mini-spinner"></div>
+            <span>Guardando...</span>
+          } @else {
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>{{ isEditing ? 'Actualizar Producto' : 'Guardar Producto' }}</span>
+          }
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

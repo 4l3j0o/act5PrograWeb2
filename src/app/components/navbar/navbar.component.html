@@ -1,0 +1,28 @@
+<header class="navbar">
+  <div class="navbar-container">
+    <a routerLink="/" class="navbar-brand">
+      <div class="brand-icon">
+        <i class="fa-solid fa-boxes-stacked"></i>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">GestiónStock</span>
+        <span class="brand-subtitle">API .NET 10 + Angular 22</span>
+      </div>
+    </a>
+
+    <nav class="navbar-links">
+      <a routerLink="/productos" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-item">
+        <i class="fa-solid fa-list"></i>
+        <span>Productos</span>
+      </a>
+      <a routerLink="/productos/nuevo" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-plus-circle"></i>
+        <span>Nuevo Producto</span>
+      </a>
+      <a routerLink="/categorias" routerLinkActive="active" class="nav-item">
+        <i class="fa-solid fa-tags"></i>
+        <span>Categorías</span>
+      </a>
+    </nav>
+  </div>
+</header>

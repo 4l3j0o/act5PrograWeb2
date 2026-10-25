@@ -1,0 +1,105 @@
+<div class="container">
+  <div class="header-section">
+    <div>
+      <h1 class="page-title">Gestión de Categorías</h1>
+      <p class="page-subtitle">Crea y administra las categorías de clasificación de productos</p>
+    </div>
+    <button class="btn btn-secondary" (click)="cargarCategorias()">
+      <i class="fa-solid fa-arrows-rotate"></i>
+      <span>Recargar</span>
+    </button>
+  </div>
+
+  @if (mensajeError) {
+    <div class="alert-box alert-danger">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <span>{{ mensajeError }}</span>
+    </div>
+  }
+
+  <div class="categories-layout">
+    <div class="glass-card create-category-card" appCardHover>
+      <div class="card-header">
+        <div class="icon-badge">
+          <i class="fa-solid fa-folder-plus"></i>
+        </div>
+        <h3 class="card-title">Nueva Categoría</h3>
+      </div>
+
+      <form (ngSubmit)="crearCategoria()">
+        <div class="form-group">
+          <label for="catNombre" class="form-label">Nombre *</label>
+          <input
+            id="catNombre"
+            name="catNombre"
+            type="text"
+            class="form-control"
+            placeholder="Ej. Electrohogar"
+            [(ngModel)]="nuevaCategoria.nombre"
+            required
+            minlength="3"
+            maxlength="100"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="catDesc" class="form-label">Descripción</label>
+          <textarea
+            id="catDesc"
+            name="catDesc"
+            rows="3"
+            class="form-control"
+            placeholder="Breve descripción opcional..."
+            [(ngModel)]="nuevaCategoria.descripcion"
+            maxlength="250"
+          ></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" [disabled]="guardando">
+          @if (guardando) {
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <span>Guardando...</span>
+          } @else {
+            <i class="fa-solid fa-plus"></i>
+            <span>Crear Categoría</span>
+          }
+        </button>
+      </form>
+    </div>
+
+    <div class="categories-list-section">
+      @if (cargando) {
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <p>Cargando categorías...</p>
+        </div>
+      } @else if (categorias.length === 0) {
+        <div class="glass-card empty-state">
+          <i class="fa-solid fa-tags empty-icon"></i>
+          <h3>No hay categorías</h3>
+          <p>Usa el formulario de la izquierda para registrar la primera categoría.</p>
+        </div>
+      } @else {
+        <div class="categories-grid">
+          @for (cat of categorias; track cat.id) {
+            <div class="glass-card category-item" appCardHover>
+              <div class="cat-top">
+                <span class="cat-id">#{{ cat.id }}</span>
+                <button
+                  class="btn-icon btn-danger"
+                  (click)="eliminarCategoria(cat.id, cat.nombre)"
+                  title="Eliminar categoría"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+
+              <h4 class="cat-name">{{ cat.nombre }}</h4>
+              <p class="cat-desc">{{ cat.descripcion || 'Sin descripción disponible.' }}</p>
+            </div>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

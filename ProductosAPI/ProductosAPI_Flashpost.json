@@ -1,0 +1,120 @@
+{
+  "info": {
+    "name": "ProductosAPI - Colección",
+    "description": "Documentación de endpoints del API de Productos y Categorías - .NET 10 Web API"
+  },
+  "requests": [
+    {
+      "name": "Obtener todas las categorías",
+      "method": "GET",
+      "url": "http://localhost:5117/api/categorias",
+      "headers": [],
+      "body": null,
+      "description": "Retorna la lista completa de categorías registradas."
+    },
+    {
+      "name": "Obtener categoría por ID",
+      "method": "GET",
+      "url": "http://localhost:5117/api/categorias/1",
+      "headers": [],
+      "body": null,
+      "description": "Retorna una categoría específica según su ID."
+    },
+    {
+      "name": "Crear categoría",
+      "method": "POST",
+      "url": "http://localhost:5117/api/categorias",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mode": "json",
+        "content": "{\n  \"nombre\": \"Alimentos\",\n  \"descripcion\": \"Productos alimenticios\"\n}"
+      },
+      "description": "Crea una nueva categoría. Se requiere nombre (3-100 chars) y descripción opcional."
+    },
+    {
+      "name": "Actualizar categoría",
+      "method": "PUT",
+      "url": "http://localhost:5117/api/categorias/1",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mode": "json",
+        "content": "{\n  \"nombre\": \"Electrónica Actualizada\",\n  \"descripcion\": \"Dispositivos y accesorios electrónicos\"\n}"
+      },
+      "description": "Actualiza los datos de una categoría existente por su ID."
+    },
+    {
+      "name": "Eliminar categoría",
+      "method": "DELETE",
+      "url": "http://localhost:5117/api/categorias/1",
+      "headers": [],
+      "body": null,
+      "description": "Elimina una categoría por su ID. Retorna 204 si fue exitoso."
+    },
+    {
+      "name": "Obtener todos los productos",
+      "method": "GET",
+      "url": "http://localhost:5117/api/productos",
+      "headers": [],
+      "body": null,
+      "description": "Retorna la lista completa de productos con el nombre de su categoría."
+    },
+    {
+      "name": "Obtener producto por ID",
+      "method": "GET",
+      "url": "http://localhost:5117/api/productos/1",
+      "headers": [],
+      "body": null,
+      "description": "Retorna un producto específico según su ID, incluyendo datos de categoría."
+    },
+    {
+      "name": "Crear producto",
+      "method": "POST",
+      "url": "http://localhost:5117/api/productos",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mode": "json",
+        "content": "{\n  \"nombre\": \"Teclado Mecánico\",\n  \"descripcion\": \"Teclado mecánico RGB\",\n  \"precio\": 59.99,\n  \"stock\": 25,\n  \"categoriaId\": 1\n}"
+      },
+      "description": "Crea un nuevo producto. Se valida que la categoría exista. Retorna 400 si la categoría no existe."
+    },
+    {
+      "name": "Actualizar producto",
+      "method": "PUT",
+      "url": "http://localhost:5117/api/productos/1",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mode": "json",
+        "content": "{\n  \"nombre\": \"Laptop Actualizada\",\n  \"descripcion\": \"Laptop 17 pulgadas\",\n  \"precio\": 1099.99,\n  \"stock\": 5,\n  \"categoriaId\": 1\n}"
+      },
+      "description": "Actualiza los datos de un producto existente por su ID."
+    },
+    {
+      "name": "Eliminar producto",
+      "method": "DELETE",
+      "url": "http://localhost:5145/api/productos/1",
+      "headers": [],
+      "body": null,
+      "description": "Elimina un producto por su ID. Retorna 204 si fue exitoso."
+    }
+  ]
+}

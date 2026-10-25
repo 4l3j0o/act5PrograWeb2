@@ -1,0 +1,146 @@
+<div class="container">
+  <div class="header-section">
+    <div>
+      <h1 class="page-title">Catálogo de Productos</h1>
+      <p class="page-subtitle">Visualización y control del inventario consumiendo el API .NET 10</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-secondary" (click)="cargarDatos()">
+        <i class="fa-solid fa-arrows-rotate"></i>
+        <span>Recargar</span>
+      </button>
+      <a routerLink="/productos/nuevo" class="btn btn-primary">
+        <i class="fa-solid fa-plus"></i>
+        <span>Nuevo Producto</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="glass-card stat-card" appCardHover>
+      <div class="stat-icon stat-primary">
+        <i class="fa-solid fa-box"></i>
+      </div>
+      <div>
+        <div class="stat-value">{{ totalProductos }}</div>
+        <div class="stat-label">Total Productos</div>
+      </div>
+    </div>
+
+    <div class="glass-card stat-card" appCardHover>
+      <div class="stat-icon stat-success">
+        <i class="fa-solid fa-dollar-sign"></i>
+      </div>
+      <div>
+        <div class="stat-value">{{ valorTotalInventario | precioFormat }}</div>
+        <div class="stat-label">Valor en Inventario</div>
+      </div>
+    </div>
+
+    <div class="glass-card stat-card" appCardHover>
+      <div class="stat-icon stat-warning">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <div>
+        <div class="stat-value">{{ productosBajoStock }}</div>
+        <div class="stat-label">Alerta Bajo Stock (&lt; 10)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glass-card filters-card">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Buscar por nombre, descripción o categoría..."
+        [(ngModel)]="busqueda"
+      />
+    </div>
+
+    <div class="category-filter">
+      <select class="form-control" [(ngModel)]="categoriaSeleccionada">
+        <option [ngValue]="null">Todas las Categorías</option>
+        @for (cat of categorias; track cat.id) {
+          <option [ngValue]="cat.id">{{ cat.nombre }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  @if (errorMensaje) {
+    <div class="alert-box alert-danger">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <div>
+        <strong>Atención:</strong> {{ errorMensaje }}
+      </div>
+    </div>
+  }
+
+  @if (cargando) {
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando productos desde el backend...</p>
+    </div>
+  } @else {
+    @let listaFiltrada = (productos | filtroProducto:busqueda:categoriaSeleccionada);
+
+    @if (listaFiltrada.length === 0) {
+      <div class="glass-card empty-state">
+        <i class="fa-solid fa-box-open empty-icon"></i>
+        <h3>No se encontraron productos</h3>
+        <p>No hay productos que coincidan con los criterios de búsqueda o el catálogo está vacío.</p>
+        <a routerLink="/productos/nuevo" class="btn btn-primary" style="margin-top: 1rem;">
+          <i class="fa-solid fa-plus"></i>
+          <span>Agregar Primer Producto</span>
+        </a>
+      </div>
+    } @else {
+      <div class="products-grid">
+        @for (prod of listaFiltrada; track prod.id) {
+          <div class="glass-card product-card" appCardHover [appHighlightStock]="prod.stock">
+            <div class="product-header">
+              <span class="category-tag">
+                <i class="fa-solid fa-tag"></i> {{ prod.categoriaNombre }}
+              </span>
+              <span
+                class="badge"
+                [class.badge-danger]="prod.stock === 0"
+                [class.badge-warning]="prod.stock > 0 && prod.stock < 10"
+                [class.badge-success]="prod.stock >= 10"
+              >
+                {{ prod.stock | stockStatus }}
+              </span>
+            </div>
+
+            <h3 class="product-title">{{ prod.nombre }}</h3>
+            <p class="product-desc">{{ prod.descripcion || 'Sin descripción adicional.' }}</p>
+
+            <div class="product-details">
+              <div>
+                <span class="detail-label">Precio</span>
+                <span class="detail-price">{{ prod.precio | precioFormat }}</span>
+              </div>
+              <div>
+                <span class="detail-label">Stock</span>
+                <span class="detail-stock">{{ prod.stock }} unidades</span>
+              </div>
+            </div>
+
+            <div class="product-actions">
+              <a [routerLink]="['/productos/editar', prod.id]" class="btn btn-secondary btn-sm">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>Editar</span>
+              </a>
+              <button class="btn btn-danger btn-sm" (click)="eliminarProducto(prod.id, prod.nombre)">
+                <i class="fa-solid fa-trash"></i>
+                <span>Eliminar</span>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
